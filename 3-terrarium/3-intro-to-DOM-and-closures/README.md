@@ -213,3 +213,28 @@ Always check browser capabilities using [CanIUse.com](https://caniuse.com/).
 
 [Work a bit more with the DOM](assignment.md)
 
+<hr>
+
+# ✅2W1H
+
+Q1. 본 예제에서 closure를 사용하는 이유는 무엇인가?
+`pointerDrag(e)`에 있는 e는 이벤트 객체인데 이는 `dragElement()` 함수 맥락에서 발생한다. 함수 안에 함수를 써서 클로저를 사용하면 바깥 함수의 스코프에 접근할 수 있기 때문에 e를 매개변수로 넘길 필요가 없다. 바깥 함수를 사용할 때 발생하는 맥락을 매개변수를 쓰지 않고 쉽게 사용하기 위해 closure를 사용한다.
+
+Q2. `terrariumElement.onpointerdown = pointerDrag`는 무슨 뜻인가?
+* 배경 지식: terrariumElement는 DOM에 속하고 DOM은 이미 내장된 web API가 존재한다. 
+terrariumElement에 내장된 onpointerdown 이벤트 핸들러를 우리가 원하는 커스텀 함수인 pointerDrag로 바꿔치기한다는 뜻이다.
+
+Q3. `e.preventDefault()`를 사용하는 이유는 무엇인가?
+DOM web API에 의해 pointerdown 이벤트가 발생하면 자동적으로 실행되는 코드가 있다. default behavior는 이미지를 드래그하면 opacity가 적용된 채로 움직이는 것이다. 하지만 우리가 만들려는 동작에서는 opacity가 적용되는 default behavior가 필요없다. 따라서 이러한 default 코드가 않도록 하는 것이 `e.preventDefault()`이다.
+
+Q4. pos1-4는 무엇이고 어떤 역할을 하는가?
+
+* 배경지식: 우리가 만들려는 행동의 핵심 원리는 좌표이동이다. 좌표이동을 구현하려면 좌표의 변화량을 계산하는 과정이 있어야 한다.
+* e.clientX: 현재 마우스의 x축 좌표
+* e.clientY: 현재 마우스의 y축 좌표
+* pos1: x축 좌표 변화량
+* pos2: y축 좌표 변화량
+* pos3: 마우스 이동(pointerdown 이벤트 발생) 전 x축 좌표
+* pos4: 마우스 이동(pointerdown 이벤트 발생) 전 y축 좌표
+* `terrariumElement.style.top = terrariumElement.offsetTop - pos2 + 'px'`: 기존 테라리움 요소 위치에서 y축 변화량을 적용한다.
+* `terrariumElement.style.left = terrariumElement.offsetLeft - pos1 + 'px'`: 기존 테라리움 요소 위치에서 x축 변화량을 적용한다.
