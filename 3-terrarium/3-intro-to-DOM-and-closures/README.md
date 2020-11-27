@@ -287,6 +287,6 @@ DOM web API에 의해 pointerdown 이벤트가 발생하면 자동적으로 실�
 * pos4: 마우스 이동(pointerdown 이벤트 발생) 전 y축 좌표
 
 ```javascript
-terrariumElement.style.top = terrariumElement.offsetTop - pos2 + 'px'` // 기존 테라리움 요소 위치에서 y축 변화량을 적용한다.
-`terrariumElement.style.left = terrariumElement.offsetLeft - pos1 + 'px'` // 기존 테라리움 요소 위치에서 x축 변화량을 적용한다.
+terrariumElement.style.top = terrariumElement.offsetTop - pos2 + 'px' // 기존 테라리움 요소 위치에서 y축 변화량을 적용한다.
+terrariumElement.style.left = terrariumElement.offsetLeft - pos1 + 'px' // 기존 테라리움 요소 위치에서 x축 변화량을 적용한다.
 ```
