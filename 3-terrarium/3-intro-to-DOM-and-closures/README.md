@@ -44,7 +44,12 @@ The first thing you need to do is to create references to the elements that you 
 
 ### Task
 
-```html
+> **INSTRUCTION**: 
+> 1. 스크립트가 로딩되자마자 HTML element가 draggable 하게 되도록 만든다.
+> 2. 그러기 위해서 HTML element를 인자로 받아서 draggable 하게 만드는 함수를 실행한다.
+> 3. 함수의 형태는 다음과 같이 한다: `dragElement(element);`
+
+```js
 dragElement(document.getElementById('plant1'));
 dragElement(document.getElementById('plant2'));
 dragElement(document.getElementById('plant3'));
@@ -69,6 +74,8 @@ What's going on here? You are referencing the document and looking through its D
 
 ## The Closure
 
+> 클로저란, 간단하게 말하면 이미 생명주기가 끝난 외부(부모) 함수의 변수를 참조하는 것을 클로저라고 말한다. 조금 더 풀어서 말하면, 생성될때 당시의 환경을 기억하는 함수를 말한다.
+
 Now you are ready to create the dragElement closure, which is an outer function that encloses an inner function or functions (in our case, we will have three). 
 
 Closures are useful when one or more functions need to access an outer function's scope. Here's an example:
@@ -90,6 +97,13 @@ In this example, the displayCandy function surrounds a function that pushes a ne
 ✅ How can you make the `candy` array accessible? Try moving it outside the closure. This way, the array becomes global, rather than remaining only available to the closure's local scope.
 
 ### Task
+
+> **INSTRUCTION**
+>
+> `dragElement()` 함수를 구현하라. 알고리즘:
+> 1. 좌표 이동을 추적할 수 있도록 마우스 드래그 이전 좌표와 현재 좌표를 저장할 변수를 만들어라.
+> 2. 마우스 드래그 이벤트를 감지하려면, 기본으로 제공되는 DOM API 중에서 마우스 버튼이 눌리는 이벤트 `pointerdown`에 대한 이벤트 핸들러인 `onpointerdown`을 사용한다.
+> 3. `onpionterdown`의 default 행동을 바꾸기 위해 커스텀 함수 `pointerDrag`를 만들어서 재할당한다.
 
 Under the element declarations in `script.js`, create a function:
 
@@ -116,7 +130,16 @@ In addition, the terrariumElement that is passed to this function is assigned a 
 
 The terrariumElement is ready to be dragged around; when the `onpointerdown` event is fired, the function pointerDrag is invoked. Add that function right under this line: `terrariumElement.onpointerdown = pointerDrag;`:
 
-### Task 
+### Task
+
+> **INSTRUCTION 1/2**:
+> 
+> `onpointerdown` 이벤트 핸들러를 대신할 `pointerDrag` 함수의 내용을 작성하라:
+> 1. `pointerdown` 이벤트를 사용하려면 `e` 변수를 사용해야 한다.
+> 2. 그런데 `e`는 dragElement 함수의 생명주기에 포함되는 변수이다. 
+> 3. 따라서 부모 함수의 환경을 그대로 사용할 수 있도록 클로저 함수를 사용한다. 
+> 4. 이벤트의 default 행동이 실행되지 않도록 `e.prventDefault()`를 호출한다.
+> 5. 마우스로 물체를 드래그하기 위해 가장 처음 실행되는 이벤트는 마우스 버튼이 눌리는 `pointerdown`이고 `pointerdown` 이벤트가 발생한 시점에 대한 모든 정보는 변수 `e`가 갖고 있다. 따라서 `e`가 갖고 있는 x좌표와 y좌표를 변수에 저장한다.
 
 ```javascript
 function pointerDrag(e) {
@@ -139,6 +162,12 @@ Next, note how the local variables `pos3` and `pos4` are set to e.clientX. You c
 
 Complete the initial function by adding two more pointer event manipulations under `pos4 = e.clientY`:
 
+> **INSTRUCTION 2/2**:
+> 
+> 하나의 element가 아니라 전체 DOM(document) 범위에서 포인터가 움직이고 멈출 때에 실행될 이벤트 핸들러 함수를 작성하라.
+> 1. 포인터가 움직일 때 발생하는 이벤트 핸들러 `onpointermove`에 커스텀 함수 `elementDrag`를 할당한다.
+> 2. 포인터가 멈췄을 때 발생하는 이벤트 핸들러 `onpinterup`에 커스텀 함수 `stopElementDrag`를 할당한다.
+
 ```html
 document.onpointermove = elementDrag;
 document.onpointerup = stopElementDrag;
@@ -150,6 +179,16 @@ Now you are indicating that you want the plant to be dragged along with the poin
 You will complete your closure by adding two more internal functions that will handle what happens when you drag a plant and stop dragging it. The behavior you want is that you can drag any plant at any time and place it anywhere on the screen. This interface is quite un-opinionated (there is no drop zone for example) to allow you to design your terrarium exactly as you like it by adding, removing, and repositioning plants.
 
 ### Task
+
+> **INSTRUCTION**
+>
+> element를 마우스 드래그로 움직이면 현재 마우스 포인터 위치에 element를 이동시키는 `elementDrag` 함수를 작성하라:
+> 1. `elementDrag`의 부모 함수가 마우스 포인터 down 시점에 대한 좌표를 갖고 있고 그 좌표를 사용해야 하므로 클로저를 사용한다.
+> 2. pointerdown 시점의 x, y좌표를 각각 pos3, pos4에 저장한다.
+> 3. 현재 시점의 x, y 좌표를 `e`를 이용해서 알아낸다. `e.clientX`, `e.clientY`
+> 4. 이전 좌표에서 현재 좌표를 뺄셈해서 x, y좌표 변화량을 각각 pos1, pos2에 저장한다.
+> 4. element의 top 위치값을 offsetTop - y좌표 변화량(pos2) + 'px'로 구한다.
+> 5. element의 left 위치값을 offsetLeft - x좌표 변화량(pos1) + 'px'로 구한다.
 
 Add the `elementDrag` function right after the closing curly bracket of `pointerDrag`:
 
@@ -173,6 +212,12 @@ As you drag, you reassign `pos1` by making it equal to `pos3` (which you set ear
 All this recalculation of positioning allows you to fine-tune the behavior of the terrarium and its plants.
 
 ### Task 
+
+> **INSTRUCTION**
+>
+> 포인터가 움직임이 없을 때 아무 동작하지 않도록 `closeElementDrag` 함수를 작성하라:
+> 1. document에 대한 onpointerup 이벤트 핸들러를 null로 만든다.
+> 2. document에 대한 onpointermove 이벤트 핸들러를 null로 만든다.
 
 The final task to complete the interface is to add the `closeElementDrag` function after the closing curly bracket of `elementDrag`:
 
@@ -223,7 +268,7 @@ Always check browser capabilities using [CanIUse.com](https://caniuse.com/).
 
 ### Q2. `terrariumElement.onpointerdown = pointerDrag`는 무슨 뜻인가?
 
-* 배경 지식: terrariumElement는 DOM에 속하고 DOM은 이미 내장된 web API가 존재한다. 
+배경 지식: terrariumElement는 DOM에 속하고 DOM은 이미 내장된 web API가 존재한다. 
 
 terrariumElement에 내장된 onpointerdown 이벤트 핸들러를 우리가 원하는 커스텀 함수인 pointerDrag로 바꿔치기한다는 뜻이다.
 
@@ -233,12 +278,15 @@ DOM web API에 의해 pointerdown 이벤트가 발생하면 자동적으로 실�
 
 ### Q4. pos1-4는 무엇이고 어떤 역할을 하는가?
 
-* 배경지식: 우리가 만들려는 행동의 핵심 원리는 좌표이동이다. 좌표이동을 구현하려면 좌표의 변화량을 계산하는 과정이 있어야 한다.
+배경지식: 우리가 만들려는 행동의 핵심 원리는 좌표이동이다. 좌표이동을 구현하려면 좌표의 변화량을 계산하는 과정이 있어야 한다.
 * e.clientX: 현재 마우스의 x축 좌표
 * e.clientY: 현재 마우스의 y축 좌표
 * pos1: x축 좌표 변화량
 * pos2: y축 좌표 변화량
 * pos3: 마우스 이동(pointerdown 이벤트 발생) 전 x축 좌표
 * pos4: 마우스 이동(pointerdown 이벤트 발생) 전 y축 좌표
-* `terrariumElement.style.top = terrariumElement.offsetTop - pos2 + 'px'`: 기존 테라리움 요소 위치에서 y축 변화량을 적용한다.
-* `terrariumElement.style.left = terrariumElement.offsetLeft - pos1 + 'px'`: 기존 테라리움 요소 위치에서 x축 변화량을 적용한다.
+
+```javascript
+terrariumElement.style.top = terrariumElement.offsetTop - pos2 + 'px'` // 기존 테라리움 요소 위치에서 y축 변화량을 적용한다.
+`terrariumElement.style.left = terrariumElement.offsetLeft - pos1 + 'px'` // 기존 테라리움 요소 위치에서 x축 변화량을 적용한다.
+```
