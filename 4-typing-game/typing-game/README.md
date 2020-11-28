@@ -131,7 +131,7 @@ Create a new file named **style.css** and add the following syntax.
 
 > **INSTRUCTION**
 >
-> 제시 문장에서 현재 타이핑할 단어를 하이라트하고 오타가 났을 때도 하이라이트 한다.
+> 제시 문장에서 현재 타이핑할 단어를 하이라이트하고 오타가 났을 때도 하이라이트 한다.
 > 1. 현재 타이핑할 단어를 `.highlight`로 셀렉트하고 배경색을 `yellow`로 설정한다.
 > 2. 타이핑에 오타가 났을 경우 `.error`로 셀렉트하고 배경색을 `lightcoral`로, border를 `red`로 설정한다.
 
