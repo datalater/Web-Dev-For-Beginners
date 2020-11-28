@@ -6,6 +6,8 @@
 
 ## Event driven programming
 
+> The difference is **how** the functions will be called.
+
 When creating a browser based application, we provide a graphical user interface (GUI) for the user to use when interacting with what we've built. The most common way to interact with the browser is through clicking and typing in various elements. The challenge we face as a developer is we don't know when they're going to perform these operations!
 
 [Event-driven programming](https://en.wikipedia.org/wiki/Event-driven_programming) is the name for the type of programming we need to do to create our GUI. If we break this phrase down a little bit, we see the core word here is **event**. [Event](https://www.merriam-webster.com/dictionary/event), according to Merriam-Webster, is defined as "something which happens". This describes our situation perfectly. We know something is going to happen for which we want to execute some code in response, but we don't know when it will take place.
@@ -75,6 +77,16 @@ Each of those will need IDs so we can work with them in our JavaScript. We will 
 
 Create a new file named **index.html**. Add the following HTML:
 
+> **INSTRUCTION**
+> 
+> UI를 설계하고 구현하라.
+> 1. `<h1>게임 제목</h1>`
+> 2. `<p>게임 설명</p>`
+> 3. `<h2 id="quote">제시 문장</h2>`
+> 4. `<h2 id="message">게임 결과</h2>`
+> 5. `<input type="text" id="typed-value"> <!-- 타이핑 텍스트 박스 -->`
+> 6. `<button type="button" id="start>Start</button> <!-- 게임 시작 버튼 -->`
+
 ```html
 <!-- inside index.html -->
 <html>
@@ -116,6 +128,12 @@ Let's add some functionality.
 With our HTML created, let's add the CSS for core styling. We need to highlight the word the player should be typing, and colorize the textbox if what they've typed is incorrect. We'll do this with two classes.
 
 Create a new file named **style.css** and add the following syntax.
+
+> **INSTRUCTION**
+>
+> 제시 문장에서 현재 타이핑할 단어를 하이라트하고 오타가 났을 때도 하이라이트 한다.
+> 1. 현재 타이핑할 단어를 `.highlight`로 셀렉트하고 배경색을 `yellow`로 설정한다.
+> 2. 타이핑에 오타가 났을 경우 `.error`로 셀렉트하고 배경색을 `lightcoral`로, border를 `red`로 설정한다.
 
 ```css
 /* inside style.css */
@@ -160,6 +178,17 @@ We're also going to want references to the UI elements:
 - The quote display (**quote**)
 - The message (**message**)
 
+> **INSTRUCTIONS**
+>
+> 게임에서 필요한 변수를 설계하고 구현하라.
+> 1. `quotes`: 제시 문장 목록을 담을 array || 문제집
+> 2. `words`: 현재 제시된 문장의 단어 목록을 담을 array
+> 3. `wordIndex`: 현재 타이핑 해야 할 단어를 추적하기 위한 array index number || highlight할 단어의 index
+> 4. `startTime`: 타이핑 속도를 재기 위한 시간
+> 5. `quoteElement`: 타이핑 해야 하는 제시 문장 element
+> 6. `messageElement`: 게임 결과 메시지 element
+> 7. `typedValueElement`: 플레이어가 타이핑 하는 input 박스 element
+
 ```javascript
 // inside script.js
 // all of our quotes
@@ -196,6 +225,19 @@ Take a minute to watch a video on using `const`, `let` and `var`
 To begin the game, the player will click on start. Of course, we don't know when they're going to click start. This is where an [event listener](https://developer.mozilla.org/docs/Web/API/EventTarget/addEventListener) comes into play. An event listener will allow us to listen for something to occur (an event) and execute code in response. In our case, we want to execute code when the user clicks on start.
 
 When the user clicks **start**, we need to select a quote, setup the user interface, and setup tracking for the current word and timing. Below is the JavaScript you'll need to add; we discuss it just after the script block.
+
+> **INSTURCTION**
+>
+> start 버튼이 클릭되면 함수를 실행해서 게임이 시작 되도록 event-driven으로 구현하라.
+> 1. start 버튼에 click 이벤트를 감지할 이벤트리스너를 추가할 것이다: 이벤트리스너는 화살표 함수로 구현한다.
+> 2. 제시 문장을 랜덤 index로 뽑을 것이다: 0에서 1사이 소수를 리턴하는 `Math.random()`과 문장 목록의 길이를 이용한다.
+> 3. 플레이어의 타이핑을 문장 단위가 아닌 단어 단위로 추적할 것이다: 제시 문장을 단어 array로 바꾸고 단어 index도 사용한다.
+> 4. 제시 문장이 뽑혔으므로 단어별로 구분지은 형태로 UI에 반영할 것이다: span 태그로 각 단어를 랩핑해서 `innerHTML`에 넣는다.
+> 5. 첫번째 단어를 highlight할 것이다: 첫번째 단어 노드에 `className`을 사용해서 클래스 속성으로 highlight를 추가한다.
+> 6. 게임이 방금 시작되었으므로 게임 결과 메세지를 초기화한다: `messageElement`의 `innerText`를 빈 문자열로 채운다.
+> 7. 플레이어 인풋 박스를 초기화한다: `typedValueElement`의 `value`를 빈 문자열로 채운다.
+> 8. 플레이어 인풋 박스가 눈에 띄도록 포커스한다: `typedValueElement`에 `focus()` 메서드를 실행하면 border 색이 달라진다.
+> 9. 타이머를 시작한다: `startTime` 변수에 현재 시간을 저장한다.
 
 ```javascript
 // at the end of script.js
@@ -251,6 +293,16 @@ Let's break down the code!
 ### Add typing logic
 
 As the player types, an `input` event will be raised. This event listener will check to ensure the player is typing the word correctly, and handle the current status of the game. Returning to **script.js**, add the following code to the end. We will break it down afterwards.
+
+> **INSTRUCTION**
+>
+> 플레이어가 타이핑할 때마다 어떻게 게임을 처리해야 하는지 시나리오 별로 예시 상황을 그려보면서 각 케이스마다 분기문으로 처리하라.
+> * 제시문장: "I never make exceptions."
+> * highlight: "I "
+> 1. 사용자가 "I"까지 쓰면, 잘 쓰고 있으므로 typedValueElement.className을 빈 문자열로 채운다.
+> 2. 사용자가 "I "까지 쓰면, 첫 번째 단어가 완성되었으므로 typedValueElement 값을 초기화하고 && wordIndex를 하나 추가하고 && 제시 문장에 포함된 모든 단어에 하이라이트를 없애기 위해 클래스를 초기화하고 && 다음 wordIndex에 해당하는 단어를 하이라이팅하기 위해 클래스 이름에 'highlight'을 추가한다.
+> 3. 사용자가 마지막 단어 "excetions."까지 쓰면, 문장이 완성되었으므로 현재 시간과 시작 시간으로 소요 시간을 구해서 성공 메시지를 출력한다.
+> 4. 위 3가지 경우에 어긋나면 오류이므로 typedValueElement의 클래스 속성에 error를 추가한다.
 
 ```javascript
 // at the end of script.js
