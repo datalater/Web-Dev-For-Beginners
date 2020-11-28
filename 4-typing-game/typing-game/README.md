@@ -394,6 +394,7 @@ Read up on [all the events available](https://developer.mozilla.org/en-US/docs/W
 
 - [o] Disable the `input` event listener on completion, and re-enable it when the button is clicked
 - [o] Disable the textbox when the player completes the quote
+- [o] Get a quote with no duplication in a row
 
 ```js
 const quotes = [
